@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../TimeTracker/views/Home/widgets/RecordAutocompleteWidget.dart';
+import '../../TimeTracker/views/Home/widgets/RecordTagDropdownWidget.dart';
+
 class DashboardHomeScreen extends StatelessWidget {
   const DashboardHomeScreen({super.key});
 
@@ -9,13 +12,13 @@ class DashboardHomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('DashboardHomeScreen'),
       ),
-      body: Center(
-        child: ElevatedButton(
-          child: const Text('Dashboard Home Screen'),
-          onPressed: () {
-            // Navigate to second route when tapped.
-          },
-        ),
+      body: Row(
+        children:  const [
+          Expanded(
+            child: RecordAutoCompleteWidget(),
+          ),
+           RecordTagDropdownWidget(),
+        ],
       ),
     );
   }

@@ -1,5 +1,6 @@
 {
   "menuTimeTracker": "Time Tracker",
   "menuDashboard": "Estatisticas",
-  "menuSettings": "Configurações"
+  "menuSettings": "Configurações",
+  "placeholderNewActivity": "No que voce está atuando?"
 }

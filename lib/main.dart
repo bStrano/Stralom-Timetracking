@@ -4,9 +4,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:stralom_timetracking/src/modules/Dashboard/views/HomeScreen.dart';
-import 'package:stralom_timetracking/src/modules/TimeTracker/views/HomeScreen.dart';
+import 'package:stralom_timetracking/src/modules/TimeTracker/views/Home/HomeScreen.dart';
 import 'package:stralom_timetracking/src/modules/settings/views/SettingsScreen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -39,35 +38,40 @@ class MyApp extends StatelessWidget {
           return locale;
         },
         theme: ThemeData(
-          brightness: Brightness.light,
-          // Define the default brightness and colors.
-
-          primaryColor: Colors.teal[800],
-          colorScheme: ColorScheme.fromSwatch().copyWith(
-              brightness: Brightness.light,
-              secondary: Colors.purpleAccent,
+          colorScheme: const ColorScheme(
+            brightness: Brightness.light,
+            primary: Colors.deepPurple,
+            onPrimary: Colors.white,
+            // Colors that are not relevant to AppBar in LIGHT mode:
+            primaryContainer: Colors.grey,
+            secondary: Colors.purpleAccent,
+            secondaryContainer: Colors.grey,
+            onSecondary: Colors.grey,
+            background: Colors.grey,
+            onBackground: Colors.grey,
+            surface: Colors.grey,
+            onSurface: Colors.grey,
+            error: Colors.grey,
+            onError: Colors.grey,
           ),
-          toggleableActiveColor: Colors.purpleAccent,
-          primarySwatch: Colors.purple,
-
-          // Define the default `TextTheme`. Use this to specify the default
-          // text styling for headlines, titles, bodies of text, and more.
-          textTheme: GoogleFonts.montserratTextTheme(),
         ),
         darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          // Define the default brightness and colors.
-          primaryColor: Colors.teal[800],
-          colorScheme: ColorScheme.fromSwatch().copyWith(
+            colorScheme: const ColorScheme(
               brightness: Brightness.dark,
+              surface: Colors.deepPurple,
+              onSurface: Colors.white,
+              // Colors that are not relevant to AppBar in DARK mode:
+              primary: Colors.grey,
+              onPrimary: Colors.grey,
+              primaryContainer: Colors.grey,
               secondary: Colors.purpleAccent,
-          ),
-          toggleableActiveColor: Colors.purpleAccent,
-          primarySwatch: Colors.purple,
-
-          // Define the default `TextTheme`. Use this to specify the default
-          // text styling for headlines, titles, bodies of text, and more.
-          textTheme: GoogleFonts.montserratTextTheme(),
+              secondaryContainer: Colors.grey,
+              onSecondary: Colors.grey,
+              background: Colors.grey,
+              onBackground: Colors.grey,
+              error: Colors.grey,
+              onError: Colors.grey,
+            ),
         ),
         themeMode: ThemeMode.dark,
 
@@ -82,8 +86,8 @@ class BottomTabNavigator extends StatefulWidget {
   BottomTabNavigator({Key? key}) : super(key: key);
 
   final List<Widget> options = <Widget>[
-    const DashboardHomeScreen(),
     const TrackerHomeScreen(),
+    const DashboardHomeScreen(),
     const SettingsHomeScreen(),
   ];
 

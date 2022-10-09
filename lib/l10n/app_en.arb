@@ -1,5 +1,6 @@
 {
   "menuTimeTracker": "Time Tracker",
   "menuDashboard": "Dashboard",
-  "menuSettings": "Settings"
+  "menuSettings": "Settings",
+  "placeholderNewActivity": "What are you working on?"
 }
