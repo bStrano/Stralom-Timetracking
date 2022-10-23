@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.com.stralom.timetracking.stralom_timetracking">
-   <application
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application
         android:label="stralom_timetracking"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
