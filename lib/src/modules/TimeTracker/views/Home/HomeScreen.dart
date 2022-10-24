@@ -3,6 +3,7 @@ import 'package:stralom_timetracking/src/modules/TimeTracker/apis/TimeRecordApi.
 import 'package:stralom_timetracking/src/modules/TimeTracker/entities/TimeRecordsGroupedByStart.dart';
 import 'package:stralom_timetracking/src/modules/TimeTracker/views/Home/widgets/RecordList/RecordListWidget.dart';
 
+import 'widgets/ActiveRecord/ActiveRecordWidget.dart';
 import 'widgets/RecordAutocompleteWidget.dart';
 
 class TrackerHomeScreen extends StatefulWidget {
@@ -37,6 +38,7 @@ class _TrackerHomeScreenState extends State<TrackerHomeScreen> {
                 // RecordAutoCompleteWidget(),
               ],
             ),
+            ActiveRecordWidget(),
             FutureBuilder(
                 future: timeTrackerRecord,
                 builder: (context, snapshot) {

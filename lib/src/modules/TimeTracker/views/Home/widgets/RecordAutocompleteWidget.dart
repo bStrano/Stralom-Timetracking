@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stralom_timetracking/src/modules/TimeTracker/apis/TimeRecordApi.dart';
 
 
 class RecordAutoCompleteWidget extends StatelessWidget {
@@ -24,8 +25,10 @@ class RecordAutoCompleteWidget extends StatelessWidget {
             hintText: AppLocalizations.of(context)!.placeholderNewActivity,
           ),
           focusNode: focusNode,
-          onFieldSubmitted: (String value) {
+          onFieldSubmitted: (String value) async {
             onFieldSubmitted();
+            await startTracking(value);
+            textEditingController.text = '';
           },
           validator: (String? value) {
             if (!_kOptions.contains(value)) {
