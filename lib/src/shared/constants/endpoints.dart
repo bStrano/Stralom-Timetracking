@@ -1,1 +1,1 @@
-const String HOST = "http://localhost:3000/";
+const String HOST = "http://192.168.19.1:3000/";

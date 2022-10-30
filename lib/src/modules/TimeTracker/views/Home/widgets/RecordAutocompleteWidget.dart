@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:stralom_timetracking/src/modules/TimeTracker/apis/TimeRecordApi.dart';
+import 'package:provider/provider.dart';
+
+import '../../../providers/TimeTrackerProvider.dart';
 
 
 class RecordAutoCompleteWidget extends StatelessWidget {
@@ -14,6 +16,8 @@ class RecordAutoCompleteWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TimeTrackerProvider timeTrackerProvider = Provider.of(context, listen: false);
+
     return Autocomplete<String>(
       fieldViewBuilder: (BuildContext context,
           TextEditingController textEditingController,
@@ -27,7 +31,7 @@ class RecordAutoCompleteWidget extends StatelessWidget {
           focusNode: focusNode,
           onFieldSubmitted: (String value) async {
             onFieldSubmitted();
-            await startTracking(value);
+            await timeTrackerProvider.startTrackingRecord(value);
             textEditingController.text = '';
           },
           validator: (String? value) {

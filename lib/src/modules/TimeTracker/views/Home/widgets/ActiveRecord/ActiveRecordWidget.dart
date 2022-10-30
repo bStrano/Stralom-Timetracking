@@ -1,9 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:stralom_timetracking/src/modules/TimeTracker/entities/TimeRecord.dart';
-
-import '../../../../apis/TimeRecordApi.dart';
+import '../../../../providers/TimeTrackerProvider.dart';
 
 class ActiveRecordWidget extends StatefulWidget {
   const ActiveRecordWidget({Key? key}) : super(key: key);
@@ -13,27 +12,31 @@ class ActiveRecordWidget extends StatefulWidget {
 }
 
 class _ActiveRecordWidgetState extends State<ActiveRecordWidget> {
-  late Future<TimeRecord> _timeTrackerRecord;
   TimeRecord? _timeRecord;
   Timer? timer;
 
-
   updateElapsedTime(){
-    if(_timeRecord == null) return 0;
+    final TimeTrackerProvider timeTrackerProvider = Provider.of(context, listen: false);
+
+    if(timeTrackerProvider.activeTimeRecord == null) return 0;
     DateTime now = DateTime.now();
-    int elapsedTime = now.difference(_timeRecord!.start).inSeconds;
-    _timeRecord?.elapsedTime = elapsedTime;
+    int elapsedTime = now.difference(timeTrackerProvider.activeTimeRecord!.start).inSeconds;
+    timeTrackerProvider.activeTimeRecord?.elapsedTime = elapsedTime;
     setState(() {
-      _timeRecord = _timeRecord;
+      _timeRecord = timeTrackerProvider.activeTimeRecord;
     });
   }
+
+
 
   @override
   void initState() {
     super.initState();
-    _timeTrackerRecord = fetchActiveRecord().then((value) => _timeRecord = value);
+    final TimeTrackerProvider timeTrackerProvider = Provider.of(context, listen: false);
+    timeTrackerProvider.getActive().then((value) => _timeRecord = value);
     timer = Timer.periodic(const Duration(seconds: 1), (Timer t) => updateElapsedTime());
   }
+
 
   @override
   void dispose() {
@@ -43,9 +46,14 @@ class _ActiveRecordWidgetState extends State<ActiveRecordWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final TimeTrackerProvider timeTrackerProvider = Provider.of(context, listen: true);
+
     return FutureBuilder(
-        future: _timeTrackerRecord,
+        future: timeTrackerProvider.activeTimeRecordFuture,
         builder: (context, snapshot) {
+          if(snapshot.connectionState == ConnectionState.waiting){
+            return Text('Loading');
+          }
           if (snapshot.data != null) {
             return Container(
               padding: const EdgeInsets.fromLTRB(18, 20, 20, 10),
@@ -56,7 +64,7 @@ class _ActiveRecordWidgetState extends State<ActiveRecordWidget> {
                   ),
                   Text(_timeRecord!.getFormattedElapsedTime()),
                   IconButton(
-                    onPressed: () async => await stopTracking(_timeRecord!.id),
+                    onPressed: () async => await timeTrackerProvider.stopTrackingRecord(_timeRecord!.id),
                     icon: const Icon(
                       Icons.stop_circle,
                       color: Colors.red,
@@ -66,7 +74,7 @@ class _ActiveRecordWidgetState extends State<ActiveRecordWidget> {
               ),
             );
           }
-          return Text('snapshot.data');
+          return Container();
         });
   }
 }
