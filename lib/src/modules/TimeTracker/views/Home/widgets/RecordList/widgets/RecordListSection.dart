@@ -27,4 +27,7 @@ class RecordListSection implements RecordListItem {
 
   @override
   Widget buildSubtitle(BuildContext context) => const SizedBox.shrink();
+
+  @override
+  bool isCard = false;
 }

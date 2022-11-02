@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stralom_timetracking/src/modules/TimeTracker/views/Home/widgets/RecordList/RecordListWidget.dart';
+import 'package:stralom_timetracking/src/modules/TimeTracker/views/Registration/TimeTrackerRegistration.dart';
 
 import '../../providers/TimeTrackerProvider.dart';
 import 'widgets/ActiveRecord/ActiveRecordWidget.dart';
@@ -27,6 +28,16 @@ class _TrackerHomeScreenState extends State<TrackerHomeScreen> {
     final TimeTrackerProvider timeTrackerProvider = Provider.of(context, listen: true);
 
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const TimeTrackerRegistration()),
+            );
+          },
+          backgroundColor: Colors.deepPurple,
+          child: const Icon(Icons.add),
+        ),
         appBar: AppBar(
           title: const Text('Entradas de tempos'),
         ),
@@ -57,6 +68,7 @@ class _TrackerHomeScreenState extends State<TrackerHomeScreen> {
                   child: Center(child: CircularProgressIndicator()));
             }),
           ],
-        ));
+        )
+    );
   }
 }

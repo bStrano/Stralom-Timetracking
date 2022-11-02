@@ -7,4 +7,6 @@ abstract class RecordListItem {
 
   /// The subtitle line, if any, to show in a list item.
   Widget buildSubtitle(BuildContext context);
+
+  bool isCard = false;
 }

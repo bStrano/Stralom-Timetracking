@@ -48,10 +48,17 @@ class _RecordListWidgetState extends State<RecordListWidget> {
       itemBuilder: (context, index) {
         final item = _items[index];
 
-        return ListTile(
+        Widget listTitle = ListTile(
           title: item.buildTitle(context),
           subtitle: item.buildSubtitle(context),
         );
+
+        if(item.isCard){
+          return Card(
+            child: listTitle,
+          );
+        }
+        return listTitle;
       },
     ));
   }

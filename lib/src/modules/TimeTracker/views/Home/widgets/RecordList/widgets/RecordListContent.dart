@@ -12,4 +12,7 @@ class RecordListContent implements RecordListItem {
 
   @override
   Widget buildSubtitle(BuildContext context) => Text(body);
+
+  @override
+  bool isCard = true;
 }

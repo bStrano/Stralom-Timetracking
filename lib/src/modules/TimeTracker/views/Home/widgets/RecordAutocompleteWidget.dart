@@ -18,6 +18,9 @@ class RecordAutoCompleteWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final TimeTrackerProvider timeTrackerProvider = Provider.of(context, listen: false);
 
+    if(timeTrackerProvider.activeTimeRecord != null) {
+      return Container();
+    }
     return Autocomplete<String>(
       fieldViewBuilder: (BuildContext context,
           TextEditingController textEditingController,
