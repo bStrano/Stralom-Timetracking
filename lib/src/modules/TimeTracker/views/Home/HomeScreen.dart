@@ -15,24 +15,26 @@ class TrackerHomeScreen extends StatefulWidget {
 }
 
 class _TrackerHomeScreenState extends State<TrackerHomeScreen> {
-
   @override
   void initState() {
     super.initState();
-    final TimeTrackerProvider timeTrackerProvider = Provider.of(context, listen: false);
+    final TimeTrackerProvider timeTrackerProvider =
+        Provider.of(context, listen: false);
     timeTrackerProvider.getAll();
   }
 
   @override
   Widget build(BuildContext context) {
-    final TimeTrackerProvider timeTrackerProvider = Provider.of(context, listen: true);
+    final TimeTrackerProvider timeTrackerProvider =
+        Provider.of(context, listen: true);
 
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const TimeTrackerRegistration()),
+              MaterialPageRoute(
+                  builder: (context) => const TimeTrackerRegistration()),
             );
           },
           backgroundColor: Colors.deepPurple,
@@ -55,20 +57,18 @@ class _TrackerHomeScreenState extends State<TrackerHomeScreen> {
             FutureBuilder(
                 future: timeTrackerProvider.timeTrackerRecordFuture,
                 builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Text('Loading');
+                  } else if (snapshot.hasData) {
+                    return RecordListWidget(records: snapshot.data!);
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  }
 
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Text('Loading');
-              } else if (snapshot.hasData) {
-                return RecordListWidget(records: snapshot.data!);
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
-
-              return const Expanded(
-                  child: Center(child: CircularProgressIndicator()));
-            }),
+                  return const Expanded(
+                      child: Center(child: CircularProgressIndicator()));
+                }),
           ],
-        )
-    );
+        ));
   }
 }

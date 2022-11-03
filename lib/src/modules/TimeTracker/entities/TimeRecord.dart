@@ -11,6 +11,7 @@ class TimeRecord {
   String title;
   DateTime start;
   DateTime? end;
+  @JsonKey(ignore: true)
   int elapsedTime = 0;
 
 

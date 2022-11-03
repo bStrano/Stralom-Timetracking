@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stralom_timetracking/src/modules/Projects/views/List/ProjectsScreen.dart';
 
 import '../../../../shared/widgets/DateTimeInput.dart';
 
@@ -22,7 +23,16 @@ class _TimeTrackerRegistrationState extends State<TimeTrackerRegistration> {
           TextFormField(decoration: InputDecoration(hintText: AppLocalizations.of(context)!.placeholderNewActivity)),
           const DateTimeInput(label: 'Data Inicio'),
           const DateTimeInput(label: 'Data Termino'),
-          TextFormField(),
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ProjectScreen()),
+              );
+            },
+            child: const Text('Selecionar projeto'),
+          ),
           TextFormField(),
         ],
       ),),
