@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stralom_timetracking/src/modules/Projects/providers/ProjectProvider.dart';
 
+import '../widgets/ProjectRegisterForm.dart';
+
 class ProjectScreen extends StatefulWidget {
-  const ProjectScreen({Key? key}) : super(key: key);
+  final bool? selector;
+
+  const ProjectScreen({super.key,this.selector});
 
   @override
   State<ProjectScreen> createState() => _ProjectScreenState();
@@ -26,6 +30,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
       ),
       body: Column(
         children: [
+          const ProjectRegisterForm(),
           FutureBuilder(
               future: projectProvider.projectsFuture,
               builder: (context, snapshot) {
@@ -34,10 +39,24 @@ class _ProjectScreenState extends State<ProjectScreen> {
                 } else if (snapshot.hasData) {
                   return Expanded(
                       child: ListView.builder(
-                          itemCount: projectProvider.projects?.length,
+                          itemCount: projectProvider.projects.length,
                           itemBuilder: (context, index) {
                             final item = snapshot.data![index];
-                            return ListTile(title: Text(item.name));
+                            return ListTile(
+                                title: TextButton(
+                                  onPressed: () {
+                                    if(widget.selector == true){
+                                      Navigator.of(context).pop(item);
+                                    }
+                                    print('PRESS');
+                                  },
+                                  child: Row(
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.circle_sharp), color: Color(int.parse(item.color, radix: 16)), onPressed: () {  },),
+                                  Text(item.name)
+                              ],
+                            )));
                           }));
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
