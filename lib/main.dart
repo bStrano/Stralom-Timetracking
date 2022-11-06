@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:stralom_timetracking/src/modules/Dashboard/views/HomeScreen.dart';
 import 'package:stralom_timetracking/src/modules/Projects/providers/ProjectProvider.dart';
+import 'package:stralom_timetracking/src/modules/Tags/providers/TagProvider.dart';
 import 'package:stralom_timetracking/src/modules/TimeTracker/views/Home/HomeScreen.dart';
 import 'package:stralom_timetracking/src/modules/settings/views/SettingsScreen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -16,7 +17,8 @@ import 'src/modules/TimeTracker/providers/TimeTrackerProvider.dart';
 void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (ctx) => TimeTrackerProvider()),
-    ChangeNotifierProvider(create: (ctx) => ProjectProvider())
+    ChangeNotifierProvider(create: (ctx) => ProjectProvider()),
+    ChangeNotifierProvider(create: (ctx) => TagProvider())
   ], child: const MyApp()));
 }
 

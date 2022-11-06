@@ -7,7 +7,7 @@ import '../widgets/ProjectRegisterForm.dart';
 class ProjectScreen extends StatefulWidget {
   final bool? selector;
 
-  const ProjectScreen({super.key,this.selector});
+  const ProjectScreen({super.key, this.selector});
 
   @override
   State<ProjectScreen> createState() => _ProjectScreenState();
@@ -44,19 +44,23 @@ class _ProjectScreenState extends State<ProjectScreen> {
                             final item = snapshot.data![index];
                             return ListTile(
                                 title: TextButton(
-                                  onPressed: () {
-                                    if(widget.selector == true){
-                                      Navigator.of(context).pop(item);
-                                    }
-                                    print('PRESS');
-                                  },
-                                  child: Row(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.circle_sharp), color: Color(int.parse(item.color, radix: 16)), onPressed: () {  },),
-                                  Text(item.name)
-                              ],
-                            )));
+                                    onPressed: () {
+                                      if (widget.selector == true) {
+                                        Navigator.of(context).pop(item);
+                                      }
+                                      print('PRESS');
+                                    },
+                                    child: Row(
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(Icons.circle_sharp),
+                                          color: Color(
+                                              int.parse(item.color, radix: 16)),
+                                          onPressed: () {},
+                                        ),
+                                        Text(item.name)
+                                      ],
+                                    )));
                           }));
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
