@@ -23,6 +23,13 @@ class TimeTrackerProvider with ChangeNotifier {
     return activeTimeRecordFuture;
   }
 
+  Future<void> save(TimeRecord record) async {
+    await save(record);
+    getActive();
+    getAll();
+    notifyListeners();
+  }
+
   Future<void> startTrackingRecord(String value) async {
     await startTracking(value);
     getActive();

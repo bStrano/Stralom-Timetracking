@@ -22,7 +22,7 @@ class _TagScreenState extends State<TagScreen> {
   toggleTag(Tag tag){
     int index = _selectedTags.indexOf(tag);
     if(index == -1){
-      setState(() {
+      return setState(() {
         _selectedTags.add(tag);
         _showFab = true;
       });

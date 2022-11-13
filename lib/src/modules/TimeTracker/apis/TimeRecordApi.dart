@@ -46,6 +46,22 @@ Future<void> startTracking(String title) async {
   }
 }
 
+Future<void> save(TimeRecord record) async {
+  final response = await http.post(
+    Uri.parse('${HOST}records'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: record.toJson(),
+  );
+
+  if (response.statusCode == 201) {
+    print('Saved');
+  } else {
+    throw Exception('Failed start tracking record.');
+  }
+}
+
 Future<void> stopTracking(int id) async {
   final response = await http.patch(
     Uri.parse('${HOST}records/stop/$id'),

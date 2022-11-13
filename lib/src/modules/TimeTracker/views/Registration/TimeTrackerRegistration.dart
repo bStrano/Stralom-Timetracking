@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 import 'package:stralom_timetracking/src/modules/Projects/views/List/ProjectsScreen.dart';
 import 'package:stralom_timetracking/src/modules/Tags/views/List/TagsScreen.dart';
 
 import '../../../../shared/widgets/DateTimeInput.dart';
 import '../../../Projects/entities/Project.dart';
 import '../../../Tags/entities/Tag.dart';
+import '../../providers/TimeTrackerProvider.dart';
 
 class TimeTrackerRegistration extends StatefulWidget {
   const TimeTrackerRegistration({Key? key}) : super(key: key);
@@ -16,83 +18,98 @@ class TimeTrackerRegistration extends StatefulWidget {
 }
 
 class _TimeTrackerRegistrationState extends State<TimeTrackerRegistration> {
+  DateTime? selectedStartDate;
+  DateTime? selectedEndDate;
   Project? _selectedProject;
   List<Tag>? _selectedTags = [];
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    final TimeTrackerProvider timeTrackerProvider =
+        Provider.of(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cadastrar nova entrada'),
       ),
       body: Form(
+          key: _formKey,
           child: Padding(
-        padding: EdgeInsets.all(12),
-        child: Column(
-          children: [
-            const SizedBox(height: 10),
-            TextFormField(
-                decoration: InputDecoration(
-                    hintText:
-                        AppLocalizations.of(context)!.placeholderNewActivity)),
-            const SizedBox(height: 10),
-            const DateTimeInput(label: 'Data Inicio'),
-            const SizedBox(height: 10),
-            const DateTimeInput(label: 'Data Termino'),
-            const SizedBox(height: 10),
-            OutlinedButton(
-              onPressed: () async {
-                Project result = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ProjectScreen(
-                            selector: true,
-                          )),
-                );
-                setState(() {
-                  _selectedProject = result;
-                });
-              },
-              child: Row(
-                children: [
-                  const Expanded(child: Text('Selecionar projeto')),
-                  Container(
-                      padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                      child: _selectedProject != null
-                          ? Icon(Icons.circle_sharp,
-                              color: Color(int.parse(_selectedProject!.color,
-                                  radix: 16)))
-                          : null),
-                  Text(_selectedProject != null ? _selectedProject!.name : ''),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            OutlinedButton(
-                onPressed: () async {
-                  List<Tag> result = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const TagScreen(
-                              selector: true,
-                            )),
-                  );
-                  setState(() {
-                    _selectedTags = result;
-                  });
-                },
-                child: Row(
-                  children: const [
-                    Expanded(child: Text('Selecionar tags')),
-                  ],
-                )),
-            Container(
-                height: 50.0,
-                padding: EdgeInsets.only(top: 10, bottom: 10),
-                child: Expanded(
+            padding: EdgeInsets.all(12),
+            child: Column(
+              children: [
+                const SizedBox(height: 10),
+                TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                        hintText: AppLocalizations.of(context)!
+                            .placeholderNewActivity)),
+                const SizedBox(height: 10),
+                const DateTimeInput(label: 'Data Inicio'),
+                const SizedBox(height: 10),
+                const DateTimeInput(label: 'Data Termino'),
+                const SizedBox(height: 10),
+                OutlinedButton(
+                  onPressed: () async {
+                    Project result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProjectScreen(
+                                selector: true,
+                              )),
+                    );
+                    setState(() {
+                      _selectedProject = result;
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      const Expanded(child: Text('Selecionar projeto')),
+                      Container(
+                          padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                          child: _selectedProject != null
+                              ? Icon(Icons.circle_sharp,
+                                  color: Color(int.parse(
+                                      _selectedProject!.color,
+                                      radix: 16)))
+                              : null),
+                      Text(_selectedProject != null
+                          ? _selectedProject!.name
+                          : ''),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                OutlinedButton(
+                    onPressed: () async {
+                      List<Tag> result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const TagScreen(
+                                  selector: true,
+                                )),
+                      );
+                      setState(() {
+                        _selectedTags = result;
+                      });
+                    },
+                    child: Row(
+                      children: const [
+                        Expanded(child: Text('Selecionar tags')),
+                      ],
+                    )),
+                Container(
+                  height: 50.0,
+                  padding: EdgeInsets.only(top: 10, bottom: 10),
                   child: ListView.builder(
                       shrinkWrap: false,
-                      itemCount: _selectedTags?.length,
+                      itemCount: _selectedTags != null ? _selectedTags!.length : 0,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         final item = _selectedTags![index];
@@ -110,10 +127,41 @@ class _TimeTrackerRegistrationState extends State<TimeTrackerRegistration> {
                                       Color(int.parse(item.color, radix: 16)),
                                 )));
                       }),
-                )),
-          ],
-        ),
-      )),
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: const ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll<Color>(
+                                Colors.deepPurple)),
+                        onPressed: () {
+                          print('OK');
+                          print(_formKey.currentState);
+                          print(_formKey.currentState!.validate().toString());
+
+                          // Validate returns true if the form is valid, or false otherwise.
+                          if (_formKey.currentState!.validate()) {
+                            // If the form is valid, display a snackbar. In the real world,
+                            // you'd often call a server or save the information in a database.
+                            print('OK2');
+                            // TimeRecord record = new TimeRecord();
+                            // timeTrackerProvider.save(record)
+                            Navigator.of(context).pop();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Processing Data')),
+                            );
+                          }
+                        },
+                        child: const Text('Submit'),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          )),
     );
   }
 }
