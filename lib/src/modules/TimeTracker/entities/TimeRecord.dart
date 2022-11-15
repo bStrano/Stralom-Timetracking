@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:stralom_timetracking/src/modules/Projects/entities/Project.dart';
 
 import '../../Tags/entities/Tag.dart';
 
@@ -6,20 +7,23 @@ part 'TimeRecord.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class TimeRecord {
-  TimeRecord(this.userId, this.id, this.title, this.start, this.end);
+  TimeRecord(this.id, this.title, this.start, this.end, this.project, this.tags);
+  TimeRecord.fromForm(this.title, this.start, this.end, this.project, this.tags);
 
-  int userId;
-  int id;
+  int? id;
   String title;
   DateTime start;
   DateTime? end;
+  List<Tag>? tags = [];
+  Project? project;
   @JsonKey(ignore: true)
   int elapsedTime = 0;
-  List<Tag> tags = [];
+
 
 
   factory TimeRecord.fromJson(Map<String, dynamic> json) => _$TimeRecordFromJson(json);
   Map<String, dynamic> toJson() => _$TimeRecordToJson(this);
+
 
   // TimeRecord.fromForm(this.title, this.start, this.end);
 

@@ -80,7 +80,7 @@ class _ActiveRecordWidgetState extends State<ActiveRecordWidget> {
                             children: [
                               IconButton(
                                 onPressed: () async => await timeTrackerProvider
-                                    .stopTrackingRecord(_timeRecord!.id),
+                                    .stopTrackingRecord(_timeRecord!.id!),
                                 icon: const Icon(
                                   Icons.label,
                                   color: Colors.grey,
@@ -90,7 +90,7 @@ class _ActiveRecordWidgetState extends State<ActiveRecordWidget> {
                           )),
                           IconButton(
                             onPressed: () async => await timeTrackerProvider
-                                .stopTrackingRecord(_timeRecord!.id),
+                                .stopTrackingRecord(_timeRecord!.id!),
                             icon: const Icon(
                               Icons.stop,
                               color: Colors.red,

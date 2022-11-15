@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../../../shared/constants/endpoints.dart';
+import '../../Tags/entities/Tag.dart';
 import '../entities/TimeRecord.dart';
 import '../entities/TimeRecordsGroupedByStart.dart';
 
@@ -46,13 +47,19 @@ Future<void> startTracking(String title) async {
   }
 }
 
-Future<void> save(TimeRecord record) async {
+Future<void> save(String title, DateTime? start, DateTime? end, List<Tag>? tags, int? projectId) async {
   final response = await http.post(
     Uri.parse('${HOST}records'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
-    body: record.toJson(),
+    body: json.encode({
+      'title': title,
+      'start': start != null ? '${start.toIso8601String()}Z' : null,
+      'end': end != null ? '${end.toIso8601String()}Z' : null,
+      'tags': tags?.map((e) => {'id': e.id}).toList(),
+      'projectId': projectId,
+    }),
   );
 
   if (response.statusCode == 201) {

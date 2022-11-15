@@ -18,8 +18,9 @@ class TimeTrackerRegistration extends StatefulWidget {
 }
 
 class _TimeTrackerRegistrationState extends State<TimeTrackerRegistration> {
-  DateTime? selectedStartDate;
-  DateTime? selectedEndDate;
+  TextEditingController titleTextController = TextEditingController();
+  DateTime? _selectedStartDate;
+  DateTime? _selectedEndDate;
   Project? _selectedProject;
   List<Tag>? _selectedTags = [];
   final _formKey = GlobalKey<FormState>();
@@ -41,6 +42,7 @@ class _TimeTrackerRegistrationState extends State<TimeTrackerRegistration> {
               children: [
                 const SizedBox(height: 10),
                 TextFormField(
+                    controller: titleTextController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter some text';
@@ -51,9 +53,21 @@ class _TimeTrackerRegistrationState extends State<TimeTrackerRegistration> {
                         hintText: AppLocalizations.of(context)!
                             .placeholderNewActivity)),
                 const SizedBox(height: 10),
-                const DateTimeInput(label: 'Data Inicio'),
+                DateTimeInput(
+                    label: 'Data Inicio',
+                    onChange: (selectedDate) {
+                      setState(() {
+                        _selectedStartDate = selectedDate;
+                      });
+                    }),
                 const SizedBox(height: 10),
-                const DateTimeInput(label: 'Data Termino'),
+                DateTimeInput(
+                    label: 'Data Termino',
+                    onChange: (selectedDate) {
+                      setState(() {
+                        _selectedEndDate = selectedDate;
+                      });
+                    }),
                 const SizedBox(height: 10),
                 OutlinedButton(
                   onPressed: () async {
@@ -109,7 +123,8 @@ class _TimeTrackerRegistrationState extends State<TimeTrackerRegistration> {
                   padding: EdgeInsets.only(top: 10, bottom: 10),
                   child: ListView.builder(
                       shrinkWrap: false,
-                      itemCount: _selectedTags != null ? _selectedTags!.length : 0,
+                      itemCount:
+                          _selectedTags != null ? _selectedTags!.length : 0,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         final item = _selectedTags![index];
@@ -136,22 +151,18 @@ class _TimeTrackerRegistrationState extends State<TimeTrackerRegistration> {
                         style: const ButtonStyle(
                             backgroundColor: MaterialStatePropertyAll<Color>(
                                 Colors.deepPurple)),
-                        onPressed: () {
-                          print('OK');
-                          print(_formKey.currentState);
-                          print(_formKey.currentState!.validate().toString());
-
+                        onPressed: () async {
                           // Validate returns true if the form is valid, or false otherwise.
                           if (_formKey.currentState!.validate()) {
-                            // If the form is valid, display a snackbar. In the real world,
-                            // you'd often call a server or save the information in a database.
-                            print('OK2');
+                            await timeTrackerProvider.register(titleTextController.text, _selectedStartDate, _selectedEndDate, _selectedTags, _selectedProject?.id);
                             // TimeRecord record = new TimeRecord();
                             // timeTrackerProvider.save(record)
-                            Navigator.of(context).pop();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Processing Data')),
-                            );
+                            if(mounted){
+                              Navigator.of(context).pop();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Processing Data')),
+                              );
+                            }
                           }
                         },
                         child: const Text('Submit'),

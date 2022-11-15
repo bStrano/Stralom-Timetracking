@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../Tags/entities/Tag.dart';
 import '../apis/TimeRecordApi.dart';
 import '../entities/TimeRecord.dart';
 import '../entities/TimeRecordsGroupedByStart.dart';
@@ -23,8 +24,8 @@ class TimeTrackerProvider with ChangeNotifier {
     return activeTimeRecordFuture;
   }
 
-  Future<void> save(TimeRecord record) async {
-    await save(record);
+  Future<void> register(String title, DateTime? start, DateTime? end, List<Tag>? tags, int? projectId) async {
+    await save(title, start, end, tags, projectId);
     getActive();
     getAll();
     notifyListeners();

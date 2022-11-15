@@ -3,9 +3,10 @@ import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 
 class DateTimeInput extends StatefulWidget {
-  const DateTimeInput({Key? key, required this.label}) : super(key: key);
+  const DateTimeInput({Key? key, required this.label, required this.onChange}) : super(key: key);
 
   final String label;
+  final Function onChange;
 
   @override
   State<DateTimeInput> createState() => _DateTimeInputState();
@@ -41,6 +42,7 @@ class _DateTimeInputState extends State<DateTimeInput> {
             _selectedDate = DateTime(pickedDate.year, pickedDate.month, pickedDate.day, pickedTime.hour, pickedTime.minute);
             _selectedTime = pickedTime;
           });
+          widget.onChange(_selectedDate);
         }
       },
       child: Row(
