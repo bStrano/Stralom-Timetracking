@@ -23,7 +23,7 @@ class _RecordListWidgetState extends State<RecordListWidget> {
     for (var element in widget.records) {
       data.add(RecordListSection(element.date));
       for (var record in element.records) {
-        data.add(RecordListContent(record.title, record.start.toString()));
+        data.add(RecordListContent(record));
       }
     }
     setState(() {

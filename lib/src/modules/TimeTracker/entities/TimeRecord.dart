@@ -16,7 +16,6 @@ class TimeRecord {
   DateTime? end;
   List<Tag>? tags = [];
   Project? project;
-  @JsonKey(ignore: true)
   int elapsedTime = 0;
 
 
