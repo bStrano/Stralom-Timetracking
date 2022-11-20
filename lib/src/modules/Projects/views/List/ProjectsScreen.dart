@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stralom_timetracking/src/modules/Projects/providers/ProjectProvider.dart';
+import 'package:stralom_timetracking/src/modules/Projects/views/List/ProjectScreenArguments.dart';
 
 import '../widgets/ProjectRegisterForm.dart';
 
@@ -23,6 +24,9 @@ class _ProjectScreenState extends State<ProjectScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final params = ModalRoute.of(context)?.settings.arguments as ProjectScreenArguments;
+
+    print(params);
     final ProjectProvider projectProvider = Provider.of(context, listen: true);
     return Scaffold(
       appBar: AppBar(
@@ -45,7 +49,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
                             return ListTile(
                                 title: TextButton(
                                     onPressed: () {
-                                      if (widget.selector == true) {
+                                      if (params.selector == true) {
                                         Navigator.of(context).pop(item);
                                       }
                                       print('PRESS');

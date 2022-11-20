@@ -7,10 +7,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:stralom_timetracking/src/modules/Dashboard/views/HomeScreen.dart';
 import 'package:stralom_timetracking/src/modules/Projects/providers/ProjectProvider.dart';
+import 'package:stralom_timetracking/src/modules/Projects/views/List/ProjectsScreen.dart';
+import 'package:stralom_timetracking/src/modules/Settings/views/SettingsScreen.dart';
 import 'package:stralom_timetracking/src/modules/Tags/providers/TagProvider.dart';
+import 'package:stralom_timetracking/src/modules/Tags/views/List/TagsScreen.dart';
 import 'package:stralom_timetracking/src/modules/TimeTracker/views/Home/HomeScreen.dart';
-import 'package:stralom_timetracking/src/modules/settings/views/SettingsScreen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stralom_timetracking/src/modules/TimeTracker/views/Registration/TimeTrackerRegistration.dart';
 
 import 'src/modules/TimeTracker/providers/TimeTrackerProvider.dart';
 
@@ -83,10 +86,17 @@ class MyApp extends StatelessWidget {
           ),
         ),
         themeMode: ThemeMode.dark,
-        home: DefaultTabController(
-          length: 3,
-          child: BottomTabNavigator(),
-        ));
+        initialRoute: '/',
+        routes: {
+          '/': (context) => DefaultTabController(
+                length: 3,
+                child: BottomTabNavigator(),
+              ),
+          '/time-record/register': (context) => const TimeTrackerRegistration(),
+          '/time-record/register/tag': (context) => const TagScreen(),
+          '/time-record/register/project': (context) => const ProjectScreen(),
+        },
+    );
   }
 }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stralom_timetracking/src/modules/Tags/providers/TagProvider.dart';
+import 'package:stralom_timetracking/src/modules/Tags/views/List/TagScreenArgument.dart';
 
 import '../../entities/Tag.dart';
 import '../widgets/TagRegisterForm.dart';
@@ -43,6 +44,7 @@ class _TagScreenState extends State<TagScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final params = ModalRoute.of(context)?.settings.arguments as TagScreenArguments;
     final TagProvider tagProvider = Provider.of(context, listen: true);
     return Scaffold(
       appBar: AppBar(
@@ -74,7 +76,7 @@ class _TagScreenState extends State<TagScreen> {
                                 title: TextButton(
                                   style:  ButtonStyle(backgroundColor: _selectedTags.contains(item) ? MaterialStateProperty.all(Theme.of(context).highlightColor) : null),
                                   onPressed: () {
-                                    if(widget.selector == true){
+                                    if(params.selector == true){
                                       toggleTag(item);
                                     }
                                     print('PRESS');

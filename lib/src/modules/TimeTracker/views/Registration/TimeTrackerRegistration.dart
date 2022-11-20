@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:stralom_timetracking/src/modules/Projects/views/List/ProjectsScreen.dart';
-import 'package:stralom_timetracking/src/modules/Tags/views/List/TagsScreen.dart';
-
+import 'package:stralom_timetracking/src/modules/Tags/views/List/TagScreenArgument.dart';
 import '../../../../shared/widgets/DateTimeInput.dart';
 import '../../../Projects/entities/Project.dart';
+import '../../../Projects/views/List/ProjectScreenArguments.dart';
 import '../../../Tags/entities/Tag.dart';
 import '../../providers/TimeTrackerProvider.dart';
 
@@ -71,13 +70,10 @@ class _TimeTrackerRegistrationState extends State<TimeTrackerRegistration> {
                 const SizedBox(height: 10),
                 OutlinedButton(
                   onPressed: () async {
-                    Project result = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ProjectScreen(
-                                selector: true,
-                              )),
-                    );
+                    Project result = await Navigator.pushNamed(
+                            context, '/time-record/register/project',
+                            arguments: ProjectScreenArguments(selector: true))
+                        as Project;
                     setState(() {
                       _selectedProject = result;
                     });
@@ -102,13 +98,10 @@ class _TimeTrackerRegistrationState extends State<TimeTrackerRegistration> {
                 const SizedBox(height: 10),
                 OutlinedButton(
                     onPressed: () async {
-                      List<Tag> result = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const TagScreen(
-                                  selector: true,
-                                )),
-                      );
+                      List<Tag> result = await Navigator.pushNamed(
+                              context, '/time-record/register/tag',
+                              arguments: TagScreenArguments(selector: true))
+                          as List<Tag>;
                       setState(() {
                         _selectedTags = result;
                       });
@@ -154,13 +147,19 @@ class _TimeTrackerRegistrationState extends State<TimeTrackerRegistration> {
                         onPressed: () async {
                           // Validate returns true if the form is valid, or false otherwise.
                           if (_formKey.currentState!.validate()) {
-                            await timeTrackerProvider.register(titleTextController.text, _selectedStartDate, _selectedEndDate, _selectedTags, _selectedProject?.id);
+                            await timeTrackerProvider.register(
+                                titleTextController.text,
+                                _selectedStartDate,
+                                _selectedEndDate,
+                                _selectedTags,
+                                _selectedProject?.id);
                             // TimeRecord record = new TimeRecord();
                             // timeTrackerProvider.save(record)
-                            if(mounted){
+                            if (mounted) {
                               Navigator.of(context).pop();
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Processing Data')),
+                                const SnackBar(
+                                    content: Text('Processing Data')),
                               );
                             }
                           }

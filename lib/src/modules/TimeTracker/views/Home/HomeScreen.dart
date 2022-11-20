@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:stralom_timetracking/src/modules/TimeTracker/views/Home/widgets/RecordList/RecordListWidget.dart';
-import 'package:stralom_timetracking/src/modules/TimeTracker/views/Registration/TimeTrackerRegistration.dart';
-
 import '../../providers/TimeTrackerProvider.dart';
 import 'widgets/ActiveRecord/ActiveRecordWidget.dart';
 import 'widgets/RecordAutocompleteWidget.dart';
@@ -31,10 +29,9 @@ class _TrackerHomeScreenState extends State<TrackerHomeScreen> {
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(
+            Navigator.pushNamed(
               context,
-              MaterialPageRoute(
-                  builder: (context) => const TimeTrackerRegistration()),
+              '/time-record/register',
             );
           },
           backgroundColor: Colors.deepPurple,
